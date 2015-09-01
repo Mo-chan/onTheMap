@@ -8,11 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		4668885B1B9049DA002D97B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668885A1B9049DA002D97B7 /* AppDelegate.swift */; };
-		4668885D1B9049DA002D97B7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668885C1B9049DA002D97B7 /* ViewController.swift */; };
+		4668885D1B9049DA002D97B7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668885C1B9049DA002D97B7 /* LoginViewController.swift */; };
 		466888601B9049DA002D97B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4668885E1B9049DA002D97B7 /* Main.storyboard */; };
 		466888621B9049DA002D97B7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 466888611B9049DA002D97B7 /* Images.xcassets */; };
 		466888651B9049DA002D97B7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 466888631B9049DA002D97B7 /* LaunchScreen.xib */; };
 		466888711B9049DA002D97B7 /* ontheMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888701B9049DA002D97B7 /* ontheMapTests.swift */; };
+		4668887E1B907AA5002D97B7 /* OTMClinet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668887D1B907AA5002D97B7 /* OTMClinet.swift */; };
+		466888801B907AD9002D97B7 /* OTMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668887F1B907AD9002D97B7 /* OTMConstants.swift */; };
+		466888821B907AF5002D97B7 /* OTMConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888811B907AF5002D97B7 /* OTMConvenience.swift */; };
+		466888841B932DC8002D97B7 /* StudentInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888831B932DC8002D97B7 /* StudentInformation.swift */; };
+		466888861B933293002D97B7 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888851B933293002D97B7 /* WebViewController.swift */; };
+		466888881B937BA6002D97B7 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888871B937BA6002D97B7 /* MapViewController.swift */; };
+		4668888A1B937BB2002D97B7 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466888891B937BB2002D97B7 /* TableViewController.swift */; };
+		4668888E1B945C3D002D97B7 /* InformationPostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4668888D1B945C3D002D97B7 /* InformationPostingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,13 +37,21 @@
 		466888551B9049DA002D97B7 /* ontheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ontheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		466888591B9049DA002D97B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4668885A1B9049DA002D97B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4668885C1B9049DA002D97B7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		4668885C1B9049DA002D97B7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4668885F1B9049DA002D97B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		466888611B9049DA002D97B7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		466888641B9049DA002D97B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		4668886A1B9049DA002D97B7 /* ontheMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ontheMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4668886F1B9049DA002D97B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		466888701B9049DA002D97B7 /* ontheMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ontheMapTests.swift; sourceTree = "<group>"; };
+		4668887D1B907AA5002D97B7 /* OTMClinet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMClinet.swift; sourceTree = "<group>"; };
+		4668887F1B907AD9002D97B7 /* OTMConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConstants.swift; sourceTree = "<group>"; };
+		466888811B907AF5002D97B7 /* OTMConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTMConvenience.swift; sourceTree = "<group>"; };
+		466888831B932DC8002D97B7 /* StudentInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentInformation.swift; sourceTree = "<group>"; };
+		466888851B933293002D97B7 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		466888871B937BA6002D97B7 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		466888891B937BB2002D97B7 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		4668888D1B945C3D002D97B7 /* InformationPostingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationPostingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +93,10 @@
 		466888571B9049DA002D97B7 /* ontheMap */ = {
 			isa = PBXGroup;
 			children = (
+				4668887C1B904A12002D97B7 /* Model */,
+				4668887B1B9049FA002D97B7 /* Controller */,
+				4668887A1B9049F3002D97B7 /* View */,
 				4668885A1B9049DA002D97B7 /* AppDelegate.swift */,
-				4668885C1B9049DA002D97B7 /* ViewController.swift */,
 				4668885E1B9049DA002D97B7 /* Main.storyboard */,
 				466888611B9049DA002D97B7 /* Images.xcassets */,
 				466888631B9049DA002D97B7 /* LaunchScreen.xib */,
@@ -110,6 +128,36 @@
 				4668886F1B9049DA002D97B7 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4668887A1B9049F3002D97B7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		4668887B1B9049FA002D97B7 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				4668885C1B9049DA002D97B7 /* LoginViewController.swift */,
+				466888851B933293002D97B7 /* WebViewController.swift */,
+				466888871B937BA6002D97B7 /* MapViewController.swift */,
+				466888891B937BB2002D97B7 /* TableViewController.swift */,
+				4668888D1B945C3D002D97B7 /* InformationPostingViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		4668887C1B904A12002D97B7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4668887D1B907AA5002D97B7 /* OTMClinet.swift */,
+				4668887F1B907AD9002D97B7 /* OTMConstants.swift */,
+				466888811B907AF5002D97B7 /* OTMConvenience.swift */,
+				466888831B932DC8002D97B7 /* StudentInformation.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,8 +260,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4668885D1B9049DA002D97B7 /* ViewController.swift in Sources */,
+				466888841B932DC8002D97B7 /* StudentInformation.swift in Sources */,
+				466888821B907AF5002D97B7 /* OTMConvenience.swift in Sources */,
+				4668887E1B907AA5002D97B7 /* OTMClinet.swift in Sources */,
+				4668885D1B9049DA002D97B7 /* LoginViewController.swift in Sources */,
+				466888861B933293002D97B7 /* WebViewController.swift in Sources */,
+				466888801B907AD9002D97B7 /* OTMConstants.swift in Sources */,
+				4668888E1B945C3D002D97B7 /* InformationPostingViewController.swift in Sources */,
 				4668885B1B9049DA002D97B7 /* AppDelegate.swift in Sources */,
+				4668888A1B937BB2002D97B7 /* TableViewController.swift in Sources */,
+				466888881B937BA6002D97B7 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
