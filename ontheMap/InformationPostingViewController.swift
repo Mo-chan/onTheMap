@@ -21,6 +21,7 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
     @IBOutlet weak var linkText: UITextField!
     @IBOutlet weak var mapView: MKMapView!
 
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var topSecond: UIView!
     @IBOutlet weak var bottomSecond: UIView!
     @IBOutlet weak var topFirst: UIView!
@@ -97,16 +98,30 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
             var geocoder = CLGeocoder()
             address = locationText.text
             let addressString = locationText.text
+            activityIndicatorView.startAnimating()
+            self.bottomFirst.alpha = 0.5
             geocoder.geocodeAddressString(addressString, completionHandler:  {(placemarks: [AnyObject]!, error: NSError!) -> Void in
-               //alert
-                println(error)
+                if let error = error {
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        let alertController = UIAlertController(title: nil, message: "Can't Find Place.", preferredStyle: .Alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                            self.activityIndicatorView.stopAnimating()
+                            self.bottomFirst.alpha = 1
+                            self.locationText.text = "Enter Your Location Here"
+                        }
+                        alertController.addAction(OKAction)
+                        
+                        self.presentViewController(alertController, animated: true) {}
+                    }
+                }
+                
                 if let placemark = placemarks?[0] as? CLPlacemark {
                     
                     self.latitude = placemark.location.coordinate.latitude
                     self.longitude = placemark.location.coordinate.longitude
                     self.mapView.addAnnotation(MKPlacemark(placemark: placemark))
                     self.mapView.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
-                    
+                    self.activityIndicatorView.stopAnimating()
                     
                     self.topSecond.hidden = false
                     self.bottomSecond.hidden = false
@@ -131,13 +146,15 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
                 if success {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 } else {
-                    let alertController = UIAlertController(title: nil, message: "Network Faild.", preferredStyle: .Alert)
-                    let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                    NSOperationQueue.mainQueue().addOperationWithBlock {
+                        let alertController = UIAlertController(title: nil, message: "Network Faild.", preferredStyle: .Alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                        alertController.addAction(OKAction)
+                        
+                       self.presentViewController(alertController, animated: true) {}
                     }
-                    alertController.addAction(OKAction)
-                    
-                    self.presentViewController(alertController, animated: true) {}
                 }
             }
         }
@@ -176,5 +193,4 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
         return keyboardSize.CGRectValue().height
     }
     // End
-
 }

@@ -61,7 +61,6 @@ class OTMClient : NSObject {
         }
         request.HTTPBody = NSJSONSerialization.dataWithJSONObject(jsonBody, options: nil, error: &jsonifyError)
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
-
             if downloadError != nil {
                 completionHandler(result: nil, error: downloadError)
                 return

@@ -33,7 +33,8 @@ class LoginViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        emailField.text = ""
+        PasswordField.text = ""
         addKeyboardDismissRecognizer()
         subscribeToKeyboardNotifications()
     }
@@ -90,16 +91,18 @@ class LoginViewController: UIViewController {
     
     func displayError(errorString: String?) {
         dispatch_async(dispatch_get_main_queue(), {
-            if errorString == "Wrong" {
+            
+            switch errorString! {
+            
+            case "Wrong":
                 let alertController = UIAlertController(title: nil, message: "Incorrect Username or Password.", preferredStyle: .Alert)
                 let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 alertController.addAction(OKAction)
-
+                
                 self.presentViewController(alertController, animated: true) {}
-            }
-            else if errorString == "Faild to get user data" {
+            case "Faild to get user data":
                 let alertController = UIAlertController(title: nil, message: "Faild to download user data.", preferredStyle: .Alert)
                 let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     self.dismissViewControllerAnimated(true, completion: nil)
@@ -107,19 +110,15 @@ class LoginViewController: UIViewController {
                 alertController.addAction(OKAction)
                 
                 self.presentViewController(alertController, animated: true) {}
-            
-            }
-            else if errorString == "Network Error" {
-                let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .Alert)
+            case "Network Error" :
+                let alertController = UIAlertController(title: nil, message: "No Internet Connection.", preferredStyle: .Alert)
                 let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 alertController.addAction(OKAction)
                 
                 self.presentViewController(alertController, animated: true) {}
-            
-            }
-            else if errorString == "Faild to download" {
+            case "Faild to download" :
                 let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .Alert)
                 let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
                     self.dismissViewControllerAnimated(true, completion: nil)
@@ -127,7 +126,9 @@ class LoginViewController: UIViewController {
                 alertController.addAction(OKAction)
                 
                 self.presentViewController(alertController, animated: true) {}
-            
+            default:
+                println("Unknown error")
+                
             }
         })
     }

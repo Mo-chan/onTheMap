@@ -88,9 +88,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
                self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
                 alertController.addAction(OKAction)
                 
                 self.presentViewController(alertController, animated: true) {}

@@ -465,6 +465,7 @@
 				466888761B9049DA002D97B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		466888771B9049DA002D97B7 /* Build configuration list for PBXNativeTarget "ontheMapTests" */ = {
 			isa = XCConfigurationList;
@@ -473,6 +474,7 @@
 				466888791B9049DA002D97B7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -332,6 +332,9 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="fGa-Zr-giu">
+                                        <rect key="frame" x="290" y="172" width="20" height="20"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.77858664769999997" green="0.0" blue="0.057631518159999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -339,9 +342,11 @@
                                     <constraint firstItem="4Bx-uV-k7V" firstAttribute="leading" secondItem="Xlp-YD-4HW" secondAttribute="leading" constant="8" id="Hac-ot-fc5"/>
                                     <constraint firstAttribute="trailing" secondItem="cLG-t9-bOf" secondAttribute="trailing" id="Lwd-vp-6Re"/>
                                     <constraint firstItem="cLG-t9-bOf" firstAttribute="top" secondItem="4Bx-uV-k7V" secondAttribute="bottom" constant="181" id="MNo-qQ-AbI"/>
+                                    <constraint firstAttribute="centerY" secondItem="fGa-Zr-giu" secondAttribute="centerY" constant="-0.5" id="Yzl-S5-lPo"/>
                                     <constraint firstAttribute="bottom" secondItem="cLG-t9-bOf" secondAttribute="bottom" id="e8B-0Y-PZZ"/>
                                     <constraint firstAttribute="trailing" secondItem="4Bx-uV-k7V" secondAttribute="trailing" constant="8" id="eTk-pF-i3x"/>
                                     <constraint firstItem="4Bx-uV-k7V" firstAttribute="top" secondItem="Xlp-YD-4HW" secondAttribute="top" constant="65" id="eh0-Y0-DOg"/>
+                                    <constraint firstAttribute="centerX" secondItem="fGa-Zr-giu" secondAttribute="centerX" id="wFd-ga-kTg"/>
                                     <constraint firstItem="cLG-t9-bOf" firstAttribute="top" secondItem="Xlp-YD-4HW" secondAttribute="top" constant="276" id="x59-Uw-z35"/>
                                 </constraints>
                             </view>
@@ -367,6 +372,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="fGa-Zr-giu" id="0Oc-zK-gcS"/>
                         <outlet property="bottomFirst" destination="Xlp-YD-4HW" id="6ac-9D-eNu"/>
                         <outlet property="bottomSecond" destination="cdh-Y4-sZK" id="NOC-yn-aKM"/>
                         <outlet property="linkText" destination="aXV-y9-8XH" id="i6s-X4-xNI"/>
