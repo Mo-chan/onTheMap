@@ -28,7 +28,6 @@ class TableViewController :  UITableViewController, UITableViewDataSource, UITab
         let appDelegate = object as! AppDelegate
         studentInformation = appDelegate.studentInformation
         tableView.reloadData()
-        
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

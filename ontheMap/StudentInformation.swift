@@ -19,6 +19,7 @@ struct StudentInformation {
     var mediaURL : AnyObject?
     var objectID : AnyObject?
     var uniqueKey : AnyObject?
+    var updatedAt : AnyObject?
     
     init(dictionary : [String: AnyObject]){
  
@@ -30,5 +31,6 @@ struct StudentInformation {
             self.mediaURL = dictionary["mediaURL"]
             self.objectID = dictionary["objectID"]
             self.uniqueKey = dictionary["uniqueKey"]
+            self.updatedAt = dictionary["updatedAt"]
     }
 }
