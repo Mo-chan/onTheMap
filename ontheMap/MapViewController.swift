@@ -82,8 +82,8 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func logoutButton(sender: AnyObject) {
-        let urlstring = OTMClient.Constants.BaseURLSecure + OTMClient.Methods.Session
-        OTMClient.sharedInstance().logoutUser(urlstring) { (result, errorString) in
+        
+        OTMClient.sharedInstance().logoutUser() { (result, errorString) in
             if result {
                self.dismissViewControllerAnimated(true, completion: nil)
             } else {
@@ -114,9 +114,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
                 }
             } else {
                 let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
+                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
                 alertController.addAction(OKAction)
                 
                 self.presentViewController(alertController, animated: true) {}

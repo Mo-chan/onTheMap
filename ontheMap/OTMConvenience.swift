@@ -150,8 +150,8 @@ extension OTMClient {
     }
     
     
-    func logoutUser(urlstring: String, completionHandler: (result: Bool, error: String?) -> Void) {
-        
+    func logoutUser(completionHandler: (result: Bool, error: String?) -> Void) {
+        let urlstring = OTMClient.Constants.BaseURLSecure + OTMClient.Methods.Session
         let task = taskForDELETEMethod(urlstring) { JSONResult, error in
             
             if let error = error {
