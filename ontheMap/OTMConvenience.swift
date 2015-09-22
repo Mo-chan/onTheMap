@@ -50,7 +50,7 @@ extension OTMClient {
                                 appDelegate.studentInformation = [StudentInformation] ()
                                 if let locations = locations {
                                     for location in locations {
-                                        var student = StudentInformation (dictionary: location)
+                                        let student = StudentInformation (dictionary: location)
                                         appDelegate.studentInformation.append(student)
                                     }
                                 }
@@ -73,13 +73,13 @@ extension OTMClient {
     
     func getSession(urlstring: String, jsonBody:[String:AnyObject], completionHandler: (success: Bool, sessionID: String?,userID : String? ,errorString: String?) -> Void) {
         
-        let task = taskForPOSTMethod(urlstring, jsonBody: jsonBody) { JSONResult, error in
+        _ = taskForPOSTMethod(urlstring, jsonBody: jsonBody) { JSONResult, error in
             
-            if let error = error {
+            if let _ = error {
                 completionHandler(success: false, sessionID: nil, userID : nil , errorString: "Network Error")
             } else {
 
-                if let status = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
+                if let _ = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
                    completionHandler(success: false, sessionID: nil, userID : nil , errorString: "Wrong")
                 } else {
                     let account = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Account) as! [String : AnyObject]
@@ -93,13 +93,13 @@ extension OTMClient {
     
     func getUserData(urlstring: String, completionHandler: (success: Bool, lastName: String?, firstName : String? ,errorString: String?) -> Void) {
         
-        let task = taskForGETMethod(urlstring) { JSONResult, error in
+        _ = taskForGETMethod(urlstring) { JSONResult, error in
 
-            if let error = error {
+            if let _ = error {
                 completionHandler(success: false, lastName: nil, firstName : nil , errorString: "Network Error")
             } else {
                 
-                if let sessionID = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
+                if let _ = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
                      completionHandler(success: false, lastName: nil, firstName : nil , errorString: "Faild to get user data")
                 } else {
                     let user = JSONResult.valueForKey(OTMClient.JSONBodyKeys.User) as! [String : AnyObject]
@@ -112,9 +112,9 @@ extension OTMClient {
     
     func getStudentLocations(urlstring: String, completionHandler: (success: Bool, locations: [[String: AnyObject]]?, errorString: String?) -> Void) {
         
-        let task = taskForGETMethod(urlstring) { JSONResult, error in
+        _ = taskForGETMethod(urlstring) { JSONResult, error in
             
-            if let error = error {
+            if let _ = error {
                 completionHandler(success: false, locations: nil, errorString: "Network Error")
             } else {
                 if let arrayOfResults = JSONResult.valueForKey("results") as? [[String:AnyObject]] {
@@ -140,8 +140,8 @@ extension OTMClient {
             OTMClient.ParameterKeys.longitude : parameters[3]
             
         ]
-        let task = taskForPOSTMethod(urlstring, jsonBody: Body) { JSONResult, error in
-            if let error = error {
+        _ = taskForPOSTMethod(urlstring, jsonBody: Body) { JSONResult, error in
+            if let _ = error {
                 completionHandler(success: false, errorString: "Network Error")
             } else {
                 completionHandler(success: true, errorString: "Done")
@@ -152,9 +152,9 @@ extension OTMClient {
     
     func logoutUser(completionHandler: (result: Bool, error: String?) -> Void) {
         let urlstring = OTMClient.Constants.BaseURLSecure + OTMClient.Methods.Session
-        let task = taskForDELETEMethod(urlstring) { JSONResult, error in
+        _ = taskForDELETEMethod(urlstring) { JSONResult, error in
             
-            if let error = error {
+            if let _ = error {
                 completionHandler(result: false, error: "Network Error")
             } else {
                 completionHandler(result: true, error: "Done")

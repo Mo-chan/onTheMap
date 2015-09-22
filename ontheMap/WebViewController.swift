@@ -37,7 +37,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     }
     
     func cancelAuth() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
 }

@@ -62,10 +62,10 @@ class LoginViewController: UIViewController {
     
     @IBAction func loginButtonTouch(sender: AnyObject) {
         
-        if emailField.text.isEmpty {
+        if emailField.text!.isEmpty {
             debugText.text = "Username Empty."
         }
-        else if PasswordField.text.isEmpty{
+        else if PasswordField.text!.isEmpty{
             debugText.text = "Password Empty."
         }
         else {
@@ -127,7 +127,7 @@ class LoginViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true) {}
             default:
-                println("Unknown error")
+                print("Unknown error")
                 
             }
         })

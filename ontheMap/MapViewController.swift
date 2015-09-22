@@ -41,7 +41,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
             let last = dictionary.lastName as! String
             let mediaURL = dictionary.mediaURL as! String
             
-            var annotation = MKPointAnnotation()
+            let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             annotation.title = "\(first) \(last)"
             annotation.subtitle = mediaURL
@@ -53,7 +53,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
     }
     
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
         
@@ -63,7 +63,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
             pinView!.pinColor = .Red
-            pinView!.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as! UIButton
+            pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -72,12 +72,12 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
         return pinView
     }
     
-    func mapView(mapView: MKMapView!, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
         if control == annotationView.rightCalloutAccessoryView {
             let app = UIApplication.sharedApplication()
-            println(annotationView.annotation.subtitle!)
-            app.openURL(NSURL(string: annotationView.annotation.subtitle!)!)
+            print(annotationView.annotation!.subtitle!)
+            app.openURL(NSURL(string: annotationView.annotation!.subtitle!!)!)
         }
     }
     
@@ -106,7 +106,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
                 self.studentInformation.removeAll(keepCapacity: false)
                 if let locations = locations {
                     for location in locations {
-                        var student = StudentInformation (dictionary: location)
+                        let student = StudentInformation (dictionary: location)
                         appDelegate.studentInformation.append(student)
                     }
                     self.studentInformation = appDelegate.studentInformation
@@ -123,7 +123,7 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
     
     }
     func pinButtonTouchUp (){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView") as! UIViewController
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView")
         self.presentViewController(controller, animated: true, completion: nil)
     }
 }

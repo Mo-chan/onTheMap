@@ -37,9 +37,9 @@ class OTMClient : NSObject {
                 return
             }
             if urlstring == Constants.ParseURLSecure {
-                OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
+                OTMClient.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
             }
-            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5))
             OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
         }
         task.resume()
@@ -51,7 +51,6 @@ class OTMClient : NSObject {
         
 
         let request = NSMutableURLRequest(URL: NSURL(string: urlstring)!)
-        var jsonifyError: NSError? = nil
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -59,16 +58,18 @@ class OTMClient : NSObject {
             request.addValue(Constants.ParseID, forHTTPHeaderField: "X-Parse-Application-Id")
             request.addValue(Constants.ParseApi, forHTTPHeaderField: "X-Parse-REST-API-Key")
         }
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(jsonBody, options: nil, error: &jsonifyError)
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonBody, options: NSJSONWritingOptions.PrettyPrinted)
+        } catch { }
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             if downloadError != nil {
                 completionHandler(result: nil, error: downloadError)
                 return
             }
             if urlstring == Constants.ParseURLSecure {
-                OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
+                OTMClient.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
             }
-            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5))
             OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
         }
         task.resume()
@@ -83,11 +84,11 @@ class OTMClient : NSObject {
         request.HTTPMethod = "DELETE"
         var xsrfCookie: NSHTTPCookie? = nil
         let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
-        for cookie in sharedCookieStorage.cookies as! [NSHTTPCookie] {
+        for cookie in sharedCookieStorage.cookies! {
             if cookie.name == "XSRF-TOKEN" { xsrfCookie = cookie }
         }
         if let xsrfCookie = xsrfCookie {
-            request.setValue(xsrfCookie.value!, forHTTPHeaderField: "X-XSRF-TOKEN")
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
         }
 
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
@@ -96,7 +97,7 @@ class OTMClient : NSObject {
                 completionHandler(result: nil, error: downloadError)
                 return
             }
-            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            let newData = data!.subdataWithRange(NSMakeRange(5, data!.length - 5))
             //println(NSString(data: newData, encoding: NSUTF8StringEncoding))
             OTMClient.parseJSONWithCompletionHandler(newData, completionHandler: completionHandler)
         }
@@ -109,18 +110,19 @@ class OTMClient : NSObject {
         
         
         let request = NSMutableURLRequest(URL: NSURL(string: urlstring)!)
-        var jsonifyError: NSError? = nil
         request.HTTPMethod = "PUT"
         request.addValue(Constants.ParseID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.ParseApi, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        request.HTTPBody = NSJSONSerialization.dataWithJSONObject(jsonBody, options: nil, error: &jsonifyError)
+        do {
+        request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonBody, options: NSJSONWritingOptions.PrettyPrinted)
+        } catch { }
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             
             if downloadError != nil {
                 completionHandler(result: nil, error: downloadError)
                 return
             }
-        OTMClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
+        OTMClient.parseJSONWithCompletionHandler(data!, completionHandler: completionHandler)
 
         }
         task.resume()
@@ -129,14 +131,17 @@ class OTMClient : NSObject {
     }
     
     class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
-        var parsingError: NSError? = nil
-        let parsedResult: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError)
-        
-        if let error = parsingError {
-            completionHandler(result: nil, error: error)
-        } else {
-            completionHandler(result: parsedResult, error: nil)
-        }
+        let parsingError: NSError? = nil
+        do {
+            let parsedResult: AnyObject? =  try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+            
+            
+            if let error = parsingError {
+                completionHandler(result: nil, error: error)
+            } else {
+                completionHandler(result: parsedResult, error: nil)
+            }
+        } catch {}
     }
     
     class func sharedInstance() -> OTMClient {
