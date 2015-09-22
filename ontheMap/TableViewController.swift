@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-class TableViewController :  UITableViewController, UITableViewDataSource, UITableViewDelegate {
+class TableViewController :  UITableViewController {
     
     var studentInformation :[StudentInformation]!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,7 +36,7 @@ class TableViewController :  UITableViewController, UITableViewDataSource, UITab
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("StudentsCell") as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("StudentsCell" , forIndexPath: indexPath)
         let student = studentInformation[indexPath.row]
         
         cell.textLabel?.text = (student.firstName! as! String) + " " + (student.lastName! as! String)
@@ -77,7 +77,7 @@ class TableViewController :  UITableViewController, UITableViewDataSource, UITab
                 self.studentInformation.removeAll(keepCapacity: false)
                 if let locations = locations {
                     for location in locations {
-                        var student = StudentInformation (dictionary: location)
+                        let student = StudentInformation (dictionary: location)
                         appDelegate.studentInformation.append(student)
                     }
                     self.studentInformation = appDelegate.studentInformation
@@ -94,7 +94,7 @@ class TableViewController :  UITableViewController, UITableViewDataSource, UITab
     
     }
     func pinButtonTouchUp (){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView") as! UIViewController
+        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView")
         self.presentViewController(controller, animated: true, completion: nil)
     }
     

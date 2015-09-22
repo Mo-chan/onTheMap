@@ -94,14 +94,14 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
     }
     @IBAction func findOnMap(sender: AnyObject) {
         
-        if !locationText.text.isEmpty {
-            var geocoder = CLGeocoder()
+        if !locationText.text!.isEmpty {
+            let geocoder = CLGeocoder()
             address = locationText.text
             let addressString = locationText.text
             activityIndicatorView.startAnimating()
             self.bottomFirst.alpha = 0.5
-            geocoder.geocodeAddressString(addressString, completionHandler:  {(placemarks: [AnyObject]!, error: NSError!) -> Void in
-                if let error = error {
+            geocoder.geocodeAddressString(addressString!, completionHandler:  {(placemarks: [CLPlacemark]?, error: NSError?) -> Void in
+                if let _ = error {
                     NSOperationQueue.mainQueue().addOperationWithBlock {
                         let alertController = UIAlertController(title: nil, message: "Can't Find Place.", preferredStyle: .Alert)
                         let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
@@ -115,10 +115,10 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
                     }
                 }
                 
-                if let placemark = placemarks?[0] as? CLPlacemark {
+                if let placemark = placemarks?[0] {
                     
-                    self.latitude = placemark.location.coordinate.latitude
-                    self.longitude = placemark.location.coordinate.longitude
+                    self.latitude = placemark.location!.coordinate.latitude
+                    self.longitude = placemark.location!.coordinate.longitude
                     self.mapView.addAnnotation(MKPlacemark(placemark: placemark))
                     self.mapView.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
                     self.activityIndicatorView.stopAnimating()
@@ -128,8 +128,8 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
                     self.topFirst.hidden = true
                     self.bottomFirst.hidden = true
                     
-                    println(placemark.location.coordinate.latitude)
-                    println(placemark.location.coordinate.longitude)
+                    print(placemark.location!.coordinate.latitude)
+                    print(placemark.location!.coordinate.longitude)
                     
                 }
             })
@@ -137,10 +137,10 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
     }
     @IBAction func submitButton(sender: AnyObject) {
         
-        if !linkText.text.isEmpty {
+        if !linkText.text!.isEmpty {
             
             link = linkText.text
-            var arrayBody = [address!,link!,latitude!,longitude!]
+            let arrayBody = [address!,link!,latitude!,longitude!]
             let urlstring = OTMClient.Constants.ParseURLSecure
             OTMClient.sharedInstance().postStudentLocation(urlstring, parameters: arrayBody) { (success, errorString) in
                 if success {
