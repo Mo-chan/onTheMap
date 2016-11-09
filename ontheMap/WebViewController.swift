@@ -12,9 +12,9 @@ import UIKit
 class WebViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webView: UIWebView!
     
-    var urlRequest: NSURLRequest? = nil
+    var urlRequest: URLRequest? = nil
     var requestToken: String? = nil
-    var completionHandler : ((success: Bool, errorString: String?) -> Void)? = nil
+    var completionHandler : ((_ success: Bool, _ errorString: String?) -> Void)? = nil
     
     // MARK: - Lifecycle
     
@@ -24,10 +24,10 @@ class WebViewController: UIViewController, UIWebViewDelegate {
         webView.delegate = self
         
         self.navigationItem.title = "Sign-in"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: "cancelAuth")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(WebViewController.cancelAuth))
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         super.viewWillAppear(animated)
         
@@ -37,7 +37,7 @@ class WebViewController: UIViewController, UIWebViewDelegate {
     }
     
     func cancelAuth() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
 }

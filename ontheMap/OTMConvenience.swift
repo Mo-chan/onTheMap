@@ -11,22 +11,22 @@ import Foundation
 
 extension OTMClient {
     
-    func LoginWithViewController(hostViewController: UIViewController, completionHandler: (success: Bool, errorString: String?) -> Void) {
+    func LoginWithViewController(_ hostViewController: UIViewController, completionHandler: (_ success: Bool, _ errorString: String?) -> Void) {
 
     }
     
-    func LoginWithUser(parameters : [String],completionHandler: (result: Bool, error: String?) -> Void) {
+    func LoginWithUser(_ parameters : [String],completionHandler: @escaping (_ result: Bool, _ error: String?) -> Void) {
         
         let Body : [String:AnyObject] = [
             
-            OTMClient.ParameterKeys.Username: parameters[0],
-            OTMClient.ParameterKeys.Password: parameters[1]
+            OTMClient.ParameterKeys.Username: parameters[0] as AnyObject,
+            OTMClient.ParameterKeys.Password: parameters[1] as AnyObject
             
         ]
         let jsonBody = ["udacity": Body]
         var urlstring = OTMClient.Constants.BaseURLSecure + OTMClient.Methods.Session
         
-        getSession(urlstring, jsonBody: jsonBody) { (success, sessionID, userID, errorString) in
+        getSession(urlstring, jsonBody: jsonBody as [String : AnyObject]) { (success, sessionID, userID, errorString) in
             
             if success {
                 self.sessionID = sessionID
@@ -45,7 +45,7 @@ extension OTMClient {
                         self.getStudentLocations(urlstring){  (success, locations , errorString) in
                             if success {
                                 
-                                let object = UIApplication.sharedApplication().delegate
+                                let object = UIApplication.shared.delegate
                                 let appDelegate = object as! AppDelegate
                                 appDelegate.studentInformation = [StudentInformation] ()
                                 if let locations = locations {
@@ -54,86 +54,86 @@ extension OTMClient {
                                         appDelegate.studentInformation.append(student)
                                     }
                                 }
-                                completionHandler(result: success, error: errorString)
+                                completionHandler(success, errorString)
                             }
                             else{
-                                completionHandler(result: success, error: errorString)
+                                completionHandler(success, errorString)
                             }
                         }
                     } else {
-                        completionHandler(result: success, error: errorString)
+                        completionHandler(success, errorString)
                     }
                 }
             } else {
-                completionHandler(result: success, error: errorString)
+                completionHandler(success, errorString)
             }
         }
         
     }
     
-    func getSession(urlstring: String, jsonBody:[String:AnyObject], completionHandler: (success: Bool, sessionID: String?,userID : String? ,errorString: String?) -> Void) {
+    func getSession(_ urlstring: String, jsonBody:[String:AnyObject], completionHandler: @escaping (_ success: Bool, _ sessionID: String?,_ userID : String? ,_ errorString: String?) -> Void) {
         
         _ = taskForPOSTMethod(urlstring, jsonBody: jsonBody) { JSONResult, error in
             
             if let _ = error {
-                completionHandler(success: false, sessionID: nil, userID : nil , errorString: "Network Error")
+                completionHandler(false, nil, nil , "Network Error")
             } else {
 
-                if let _ = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
-                   completionHandler(success: false, sessionID: nil, userID : nil , errorString: "Wrong")
+                if let _ = JSONResult?.value(forKey: OTMClient.JSONBodyKeys.Status) as? Int  {
+                   completionHandler(false, nil, nil , "Wrong")
                 } else {
-                    let account = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Account) as! [String : AnyObject]
-                    let session = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Session) as! [String : AnyObject]
+                    let account = JSONResult?.value(forKey: OTMClient.JSONBodyKeys.Account) as! [String : AnyObject]
+                    let session = JSONResult?.value(forKey: OTMClient.JSONBodyKeys.Session) as! [String : AnyObject]
                     
-                     completionHandler(success: true, sessionID : session[OTMClient.JSONBodyKeys.SessionID] as? String, userID: account[OTMClient.JSONBodyKeys.UserID] as? String, errorString: nil)
+                     completionHandler(true, session[OTMClient.JSONBodyKeys.SessionID] as? String, account[OTMClient.JSONBodyKeys.UserID] as? String, nil)
                 }
             }
         }
     }
     
-    func getUserData(urlstring: String, completionHandler: (success: Bool, lastName: String?, firstName : String? ,errorString: String?) -> Void) {
+    func getUserData(_ urlstring: String, completionHandler: @escaping (_ success: Bool, _ lastName: String?, _ firstName : String? ,_ errorString: String?) -> Void) {
         
         _ = taskForGETMethod(urlstring) { JSONResult, error in
 
             if let _ = error {
-                completionHandler(success: false, lastName: nil, firstName : nil , errorString: "Network Error")
+                completionHandler(false, nil, nil , "Network Error")
             } else {
                 
-                if let _ = JSONResult.valueForKey(OTMClient.JSONBodyKeys.Status) as? Int  {
-                     completionHandler(success: false, lastName: nil, firstName : nil , errorString: "Faild to get user data")
+                if let _ = JSONResult?.value(forKey: OTMClient.JSONBodyKeys.Status) as? Int  {
+                     completionHandler(false, nil, nil , "Faild to get user data")
                 } else {
-                    let user = JSONResult.valueForKey(OTMClient.JSONBodyKeys.User) as! [String : AnyObject]
-                    completionHandler(success: true, lastName : user[OTMClient.JSONBodyKeys.LastName] as? String, firstName: user[OTMClient.JSONBodyKeys.FirstName] as? String, errorString: nil)
+                    let user = JSONResult?.value(forKey: OTMClient.JSONBodyKeys.User) as! [String : AnyObject]
+                    completionHandler(true, user[OTMClient.JSONBodyKeys.LastName] as? String, user[OTMClient.JSONBodyKeys.FirstName] as? String, nil)
                    
                 }
             }
         }
     }
     
-    func getStudentLocations(urlstring: String, completionHandler: (success: Bool, locations: [[String: AnyObject]]?, errorString: String?) -> Void) {
+    func getStudentLocations(_ urlstring: String, completionHandler: @escaping (_ success: Bool, _ locations: [[String: AnyObject]]?, _ errorString: String?) -> Void) {
         
         _ = taskForGETMethod(urlstring) { JSONResult, error in
             
             if let _ = error {
-                completionHandler(success: false, locations: nil, errorString: "Network Error")
+                completionHandler(false, nil, "Network Error")
             } else {
-                if let arrayOfResults = JSONResult.valueForKey("results") as? [[String:AnyObject]] {
-                    completionHandler(success: true, locations: arrayOfResults, errorString: "Done")
+                if let arrayOfResults = JSONResult?.value(forKey: "results") as? [[String:AnyObject]] {
+                    completionHandler(true, arrayOfResults, "Done")
                 }
                 else {
-                    completionHandler(success: false, locations: nil, errorString: "Faild to download")
+                    completionHandler(false, nil, "Faild to download")
                 }
             }
         }
     }
     
-    func postStudentLocation(urlstring: String, parameters:[AnyObject], completionHandler: (success: Bool ,errorString: String?) -> Void) {
+    func postStudentLocation(_ urlstring: String, parameters:[AnyObject], completionHandler: @escaping (_ success: Bool ,_ errorString: String?) -> Void) {
         
         let Body : [String:AnyObject] = [
             
-            OTMClient.ParameterKeys.UniqueKey: self.userID as! AnyObject,
-            OTMClient.ParameterKeys.FirstName: self.firstName as! AnyObject,
-            OTMClient.ParameterKeys.LastName : self.lastName as! AnyObject,
+            OTMClient.ParameterKeys.UniqueKey: self.userID as AnyObject,
+            OTMClient.ParameterKeys.FirstName: self.firstName as AnyObject,
+            OTMClient.ParameterKeys.LastName : self.lastName as AnyObject,
             OTMClient.ParameterKeys.MapString : parameters[0],
             OTMClient.ParameterKeys.MediaURL : parameters[1],
             OTMClient.ParameterKeys.Latitude : parameters[2],
@@ -142,22 +142,22 @@ extension OTMClient {
         ]
         _ = taskForPOSTMethod(urlstring, jsonBody: Body) { JSONResult, error in
             if let _ = error {
-                completionHandler(success: false, errorString: "Network Error")
+                completionHandler(false, "Network Error")
             } else {
-                completionHandler(success: true, errorString: "Done")
+                completionHandler(true, "Done")
             }
         }
     }
     
     
-    func logoutUser(completionHandler: (result: Bool, error: String?) -> Void) {
+    func logoutUser(_ completionHandler: @escaping (_ result: Bool, _ error: String?) -> Void) {
         let urlstring = OTMClient.Constants.BaseURLSecure + OTMClient.Methods.Session
         _ = taskForDELETEMethod(urlstring) { JSONResult, error in
             
             if let _ = error {
-                completionHandler(result: false, error: "Network Error")
+                completionHandler(false, "Network Error")
             } else {
-                completionHandler(result: true, error: "Done")
+                completionHandler(true, "Done")
             }
         }
     }

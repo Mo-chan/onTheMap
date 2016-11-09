@@ -16,27 +16,27 @@ class TableViewController :  UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstButton = UIBarButtonItem(image: UIImage(named: "Pin"), style: UIBarButtonItemStyle.Plain,target: self, action: "pinButtonTouchUp")
-        let secondButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refreshButtonTouchUp")
+        let firstButton = UIBarButtonItem(image: UIImage(named: "Pin"), style: UIBarButtonItemStyle.plain,target: self, action: #selector(TableViewController.pinButtonTouchUp))
+        let secondButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(TableViewController.refreshButtonTouchUp))
         self.navigationItem.rightBarButtonItems = [secondButton,firstButton]
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let object = UIApplication.sharedApplication().delegate
+        let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         studentInformation = appDelegate.studentInformation
         tableView.reloadData()
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return studentInformation.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("StudentsCell" , forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "StudentsCell" , for: indexPath)
         let student = studentInformation[indexPath.row]
         
         cell.textLabel?.text = (student.firstName! as! String) + " " + (student.lastName! as! String)
@@ -44,23 +44,23 @@ class TableViewController :  UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let app = UIApplication.sharedApplication()
-        app.openURL(NSURL(string: studentInformation[indexPath.row].mediaURL as! String)!)
+        let app = UIApplication.shared
+        app.openURL(URL(string: studentInformation[indexPath.row].mediaURL as! String)!)
         
     }
     
-    @IBAction func logoutButton(sender: AnyObject) {
+    @IBAction func logoutButton(_ sender: AnyObject) {
         OTMClient.sharedInstance().logoutUser() { (result, errorString) in
             if result {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
+                let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in}
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             }
         }
         
@@ -71,10 +71,10 @@ class TableViewController :  UITableViewController {
         let urlstring = OTMClient.Constants.ParseURLSecure
         OTMClient.sharedInstance().getStudentLocations(urlstring) { (success, locations , errorString) in
             if success {
-                let object = UIApplication.sharedApplication().delegate
+                let object = UIApplication.shared.delegate
                 let appDelegate = object as! AppDelegate
-                appDelegate.studentInformation.removeAll(keepCapacity: false)
-                self.studentInformation.removeAll(keepCapacity: false)
+                appDelegate.studentInformation.removeAll(keepingCapacity: false)
+                self.studentInformation.removeAll(keepingCapacity: false)
                 if let locations = locations {
                     for location in locations {
                         let student = StudentInformation (dictionary: location)
@@ -84,18 +84,18 @@ class TableViewController :  UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
-                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
+                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in}
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             }
         }
     
     }
     func pinButtonTouchUp (){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView")
-        self.presentViewController(controller, animated: true, completion: nil)
+        let controller = self.storyboard!.instantiateViewController(withIdentifier: "InformationPostingView")
+        self.present(controller, animated: true, completion: nil)
     }
     
 }

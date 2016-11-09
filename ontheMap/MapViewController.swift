@@ -18,11 +18,11 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstButton = UIBarButtonItem(image: UIImage(named: "Pin"), style: UIBarButtonItemStyle.Plain,target: self, action: "pinButtonTouchUp")
-        let secondButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "refreshButtonTouchUp")
+        let firstButton = UIBarButtonItem(image: UIImage(named: "Pin"), style: UIBarButtonItemStyle.plain,target: self, action: #selector(MapViewController.pinButtonTouchUp))
+        let secondButton = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(MapViewController.refreshButtonTouchUp))
         self.navigationItem.rightBarButtonItems = [secondButton,firstButton]
         
-        let object = UIApplication.sharedApplication().delegate
+        let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         studentInformation = appDelegate.studentInformation
         annotationsAdd()    
@@ -53,17 +53,17 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
     }
     
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
         
-        var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
             pinView!.canShowCallout = true
-            pinView!.pinColor = .Red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .DetailDisclosure)
+            pinView!.pinTintColor = UIColor.red
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -72,26 +72,25 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
         return pinView
     }
     
-    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+    func mapView(_ mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
         if control == annotationView.rightCalloutAccessoryView {
-            let app = UIApplication.sharedApplication()
-            print(annotationView.annotation!.subtitle!)
-            app.openURL(NSURL(string: annotationView.annotation!.subtitle!!)!)
+            let app = UIApplication.shared
+            app.openURL(URL(string: annotationView.annotation!.subtitle!!)!)
         }
     }
     
-    @IBAction func logoutButton(sender: AnyObject) {
+    @IBAction func logoutButton(_ sender: AnyObject) {
         
         OTMClient.sharedInstance().logoutUser() { (result, errorString) in
             if result {
-               self.dismissViewControllerAnimated(true, completion: nil)
+               self.dismiss(animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
+                let alertController = UIAlertController(title: nil, message: "Network Error.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in}
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             }
         }
     }
@@ -100,10 +99,10 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
         let urlstring = OTMClient.Constants.ParseURLSecure
         OTMClient.sharedInstance().getStudentLocations(urlstring) { (success, locations , errorString) in
             if success {
-                let object = UIApplication.sharedApplication().delegate
+                let object = UIApplication.shared.delegate
                 let appDelegate = object as! AppDelegate
-                appDelegate.studentInformation.removeAll(keepCapacity: false)
-                self.studentInformation.removeAll(keepCapacity: false)
+                appDelegate.studentInformation.removeAll(keepingCapacity: false)
+                self.studentInformation.removeAll(keepingCapacity: false)
                 if let locations = locations {
                     for location in locations {
                         let student = StudentInformation (dictionary: location)
@@ -113,17 +112,17 @@ class MapViewController :  UIViewController, MKMapViewDelegate {
                     self.annotationsAdd()
                 }
             } else {
-                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in}
+                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in}
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             }
         }
     
     }
     func pinButtonTouchUp (){
-        let controller = self.storyboard!.instantiateViewControllerWithIdentifier("InformationPostingView")
-        self.presentViewController(controller, animated: true, completion: nil)
+        let controller = self.storyboard!.instantiateViewController(withIdentifier: "InformationPostingView")
+        self.present(controller, animated: true, completion: nil)
     }
 }

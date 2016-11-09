@@ -15,7 +15,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var debugText: UILabel!
     
     var appDelegate: AppDelegate!
-    var session: NSURLSession!
+    var session: URLSession!
     var keyboardAdjusted = false
     var lastKeyboardOffset : CGFloat = 0.0
     var tapRecognizer: UITapGestureRecognizer? = nil
@@ -23,15 +23,15 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        session = NSURLSession.sharedSession()
+        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        session = URLSession.shared
         
-        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(LoginViewController.handleSingleTap(_:)))
         tapRecognizer?.numberOfTapsRequired = 1
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         emailField.text = ""
         PasswordField.text = ""
@@ -39,7 +39,7 @@ class LoginViewController: UIViewController {
         subscribeToKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         removeKeyboardDismissRecognizer()
@@ -55,12 +55,12 @@ class LoginViewController: UIViewController {
         view.removeGestureRecognizer(tapRecognizer!)
     }
     
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     // End
     
-    @IBAction func loginButtonTouch(sender: AnyObject) {
+    @IBAction func loginButtonTouch(_ sender: AnyObject) {
         
         if emailField.text!.isEmpty {
             debugText.text = "Username Empty."
@@ -82,50 +82,50 @@ class LoginViewController: UIViewController {
     }
     
     func completeLogin() {
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             self.debugText.text = ""
-            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("MapNavigationController") as! UITabBarController
-            self.presentViewController(controller, animated: true, completion: nil)
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "MapNavigationController") as! UITabBarController
+            self.present(controller, animated: true, completion: nil)
         })
     }
     
-    func displayError(errorString: String?) {
-        dispatch_async(dispatch_get_main_queue(), {
+    func displayError(_ errorString: String?) {
+        DispatchQueue.main.async(execute: {
             
             switch errorString! {
             
             case "Wrong":
-                let alertController = UIAlertController(title: nil, message: "Incorrect Username or Password.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                let alertController = UIAlertController(title: nil, message: "Incorrect Username or Password.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    self.dismiss(animated: true, completion: nil)
                 }
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             case "Faild to get user data":
-                let alertController = UIAlertController(title: nil, message: "Faild to download user data.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                let alertController = UIAlertController(title: nil, message: "Faild to download user data.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    self.dismiss(animated: true, completion: nil)
                 }
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             case "Network Error" :
-                let alertController = UIAlertController(title: nil, message: "No Internet Connection.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                let alertController = UIAlertController(title: nil, message: "No Internet Connection.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    self.dismiss(animated: true, completion: nil)
                 }
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             case "Faild to download" :
-                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .Alert)
-                let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                let alertController = UIAlertController(title: nil, message: "Faild to get data.", preferredStyle: .alert)
+                let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                    self.dismiss(animated: true, completion: nil)
                 }
                 alertController.addAction(OKAction)
                 
-                self.presentViewController(alertController, animated: true) {}
+                self.present(alertController, animated: true) {}
             default:
                 print("Unknown error")
                 
@@ -133,36 +133,36 @@ class LoginViewController: UIViewController {
         })
     }
     
-    @IBAction func signupButtonTouch(sender: AnyObject) {
+    @IBAction func signupButtonTouch(_ sender: AnyObject) {
         
-        let app = UIApplication.sharedApplication()
-        app.openURL(NSURL(string: OTMClient.Constants.Signin)!)
+        let app = UIApplication.shared
+        app.openURL(URL(string: OTMClient.Constants.Signin)!)
     }
 
-    @IBAction func facebookButtonTouch(sender: AnyObject) {
+    @IBAction func facebookButtonTouch(_ sender: AnyObject) {
         
-        let webAuthViewController = self.storyboard!.instantiateViewControllerWithIdentifier("WebViewController") as! WebViewController
-        webAuthViewController.urlRequest = NSURLRequest(URL: NSURL(string: OTMClient.Constants.Signin)!)
+        let webAuthViewController = self.storyboard!.instantiateViewController(withIdentifier: "WebViewController") as! WebViewController
+        webAuthViewController.urlRequest = URLRequest(url: URL(string: OTMClient.Constants.Signin)!)
         
         let webAuthNavigationController = UINavigationController()
         webAuthNavigationController.pushViewController(webAuthViewController, animated: false)
         
-        dispatch_async(dispatch_get_main_queue(), {
-            self.presentViewController(webAuthNavigationController, animated: true, completion: nil)
+        DispatchQueue.main.async(execute: {
+            self.present(webAuthNavigationController, animated: true, completion: nil)
         })
     }
     
     // Start: Keyboard Adjustments Functions
     func subscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func unsubscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
         if keyboardAdjusted == false {
             lastKeyboardOffset = getKeyboardHeight(notification) / 2
@@ -171,7 +171,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         
         if keyboardAdjusted == true {
             view.superview?.frame.origin.y += lastKeyboardOffset
@@ -179,10 +179,10 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
+        return keyboardSize.cgRectValue.height
     }
     // End
 }

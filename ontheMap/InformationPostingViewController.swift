@@ -34,38 +34,38 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        topSecond.hidden = true
-        bottomSecond.hidden = true
-        topFirst.hidden = false
-        bottomFirst.hidden = false
+        topSecond.isHidden = true
+        bottomSecond.isHidden = true
+        topFirst.isHidden = false
+        bottomFirst.isHidden = false
         
         linkText.text = "Enter a Link to Share Here"
-        linkText.textAlignment = NSTextAlignment.Center
+        linkText.textAlignment = NSTextAlignment.center
         linkText.delegate = self
         
         locationText.text = "Enter Your Location Here"
-        locationText.textAlignment = NSTextAlignment.Center
+        locationText.textAlignment = NSTextAlignment.center
         locationText.delegate = self
         
-        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleSingleTap:")
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(InformationPostingViewController.handleSingleTap(_:)))
         tapRecognizer?.numberOfTapsRequired = 1
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         addKeyboardDismissRecognizer()
         subscribeToKeyboardNotifications()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         removeKeyboardDismissRecognizer()
         unsubscribeToKeyboardNotifications()
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField.text == "Enter a Link to Share Here" || textField.text == "Enter Your Location Here" {
             textField.text = ""
         }
@@ -80,80 +80,80 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
         view.removeGestureRecognizer(tapRecognizer!)
     }
     
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     // End
     
-    @IBAction func cancelFirst(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelFirst(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func cancelSecond(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelSecond(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
-    @IBAction func findOnMap(sender: AnyObject) {
+    @IBAction func findOnMap(_ sender: AnyObject) {
         
         if !locationText.text!.isEmpty {
             let geocoder = CLGeocoder()
-            address = locationText.text
+            address = locationText.text as AnyObject?
             let addressString = locationText.text
             activityIndicatorView.startAnimating()
             self.bottomFirst.alpha = 0.5
             geocoder.geocodeAddressString(addressString!, completionHandler:  {(placemarks: [CLPlacemark]?, error: NSError?) -> Void in
                 if let _ = error {
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                        let alertController = UIAlertController(title: nil, message: "Can't Find Place.", preferredStyle: .Alert)
-                        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+                    OperationQueue.main.addOperation {
+                        let alertController = UIAlertController(title: nil, message: "Can't Find Place.", preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
                             self.activityIndicatorView.stopAnimating()
                             self.bottomFirst.alpha = 1
                             self.locationText.text = "Enter Your Location Here"
                         }
                         alertController.addAction(OKAction)
                         
-                        self.presentViewController(alertController, animated: true) {}
+                        self.present(alertController, animated: true) {}
                     }
                 }
                 
                 if let placemark = placemarks?[0] {
                     
-                    self.latitude = placemark.location!.coordinate.latitude
-                    self.longitude = placemark.location!.coordinate.longitude
+                    self.latitude = placemark.location!.coordinate.latitude as AnyObject?
+                    self.longitude = placemark.location!.coordinate.longitude as AnyObject?
                     self.mapView.addAnnotation(MKPlacemark(placemark: placemark))
-                    self.mapView.setUserTrackingMode(MKUserTrackingMode.Follow, animated: true)
+                    self.mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
                     self.activityIndicatorView.stopAnimating()
                     
-                    self.topSecond.hidden = false
-                    self.bottomSecond.hidden = false
-                    self.topFirst.hidden = true
-                    self.bottomFirst.hidden = true
+                    self.topSecond.isHidden = false
+                    self.bottomSecond.isHidden = false
+                    self.topFirst.isHidden = true
+                    self.bottomFirst.isHidden = true
                     
                     print(placemark.location!.coordinate.latitude)
                     print(placemark.location!.coordinate.longitude)
                     
                 }
-            })
+            } as! CLGeocodeCompletionHandler)
         }
     }
-    @IBAction func submitButton(sender: AnyObject) {
+    @IBAction func submitButton(_ sender: AnyObject) {
         
         if !linkText.text!.isEmpty {
             
-            link = linkText.text
+            link = linkText.text as AnyObject?
             let arrayBody = [address!,link!,latitude!,longitude!]
             let urlstring = OTMClient.Constants.ParseURLSecure
             OTMClient.sharedInstance().postStudentLocation(urlstring, parameters: arrayBody) { (success, errorString) in
                 if success {
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 } else {
-                    NSOperationQueue.mainQueue().addOperationWithBlock {
-                        let alertController = UIAlertController(title: nil, message: "Network Faild.", preferredStyle: .Alert)
-                        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                    OperationQueue.main.addOperation {
+                        let alertController = UIAlertController(title: nil, message: "Network Faild.", preferredStyle: .alert)
+                        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                            self.dismiss(animated: true, completion: nil)
                         }
                         alertController.addAction(OKAction)
                         
-                       self.presentViewController(alertController, animated: true) {}
+                       self.present(alertController, animated: true) {}
                     }
                 }
             }
@@ -162,15 +162,15 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
     
     // Start: Keyboard Adjustments Functions
     func subscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InformationPostingViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(InformationPostingViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func unsubscribeToKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    func keyboardWillShow(_ notification: Notification) {
         
         if keyboardAdjusted == false {
             lastKeyboardOffset = getKeyboardHeight(notification) / 2
@@ -179,7 +179,7 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
         }
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    func keyboardWillHide(_ notification: Notification) {
         
         if keyboardAdjusted == true {
             view.superview?.frame.origin.y += lastKeyboardOffset
@@ -187,10 +187,10 @@ class InformationPostingViewController: UIViewController, MKMapViewDelegate,UITe
         }
     }
     
-    func getKeyboardHeight(notification: NSNotification) -> CGFloat {
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.CGRectValue().height
+        return keyboardSize.cgRectValue.height
     }
     // End
 }
